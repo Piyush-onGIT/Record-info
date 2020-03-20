@@ -1,0 +1,76 @@
+body{
+    background-color: black;
+}
+#main{
+    margin-top: 3%;
+    background-color: white;
+    width: 330px;
+    height: 320px;
+    border-radius: 9px;
+}
+h1{
+    color: white;
+    text-decoration: underline dashed;
+}
+#links{
+    /* position: relative; */
+    font-size: 20px;
+    margin-top: 5%;
+}
+a{
+    text-decoration: underline tomato;
+    color: tomato;
+}
+a:focus{
+    color: white;
+    text-decoration: underline white;
+    outline: none;
+}
+#usnm, #passd, #rpassd{
+    width: 210px;
+    height: 25px;
+    font-size: 20px;
+    /* font-weight: bolder; */
+    border: none;
+    border: 1px black solid;
+    border-radius: 5px;
+}
+#usnm:focus, #passd:focus, #rpassd:focus{
+    outline: none;
+    background-color: rgba(128, 128, 128, 0.287);
+    transition: 950ms;
+}
+#usnm:hover, #passd:hover, #rpassd:hover{
+    background-color: rgba(128, 128, 128, 0.201);
+    transition: 400ms;
+}
+#rpassd{
+    margin-left: 29px;
+}
+#usnm{
+    margin-top: 8%;
+    display: block;
+}
+#show{
+    color: red;
+}
+#info{
+    font-size: 15px;
+}
+#btn{
+    border: none;
+    background-color: springgreen;
+    color: black;
+    width: 150px;
+    height: 50px;
+    font-size: 23px;
+    cursor: pointer;
+}
+#btn:focus{
+    outline: none;
+    border: none;
+    background-color: rgba(7, 209, 84, 0.671);
+}
+#btn:hover{
+    background-color: rgba(7, 209, 84, 0.671);
+}

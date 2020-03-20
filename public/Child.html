@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expenditure</title>
+    <link rel="stylesheet" href="styles/child.css">
+    <!-- <script src="scripts/child.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+</head>
+<body>
+    <script>
+        var url = document.location.href
+        var name = "";
+        var ln = url.length
+        var ind;
+        for(var i = 0; i < ln; i++){
+            if(url[i] == "="){
+                break
+            }
+        }
+        ind = i + 1
+        for(ind; ind < ln; ind++){
+            name += url[ind]
+        }
+        window.onload = function(){
+            var txt = document.getElementById("name")
+            txt.innerHTML = name
+        }
+    </script>
+    <center>
+        <h1>
+            Welcome, <span id="name"></span>
+        </h1>
+        <form id="main">
+            <input type="text" placeholder="YYYY-Month" id="mnth"><p></p>
+            <input type="text" placeholder="Item" id="item"><p></p>
+            <input type="text" placeholder="Amount" id="amt"><p></p>
+            <input type="button" value="Add" id="add">
+        </form>
+    </center>
+    <script>
+
+        var firebaseConfig = {
+        apiKey: "AIzaSyC7NhuaHSfDzJ7D-1OdQfI88pMbKllPPig",
+        authDomain: "record-info.firebaseapp.com",
+        databaseURL: "https://record-info.firebaseio.com",
+        projectId: "record-info",
+        storageBucket: "record-info.appspot.com"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var mnth = document.getElementById("mnth")
+        var itm = document.getElementById("item")
+        var amnt = document.getElementById("amt")
+        var btn = document.getElementById("add")
+        var flag;
+        var items = [];
+        var amounts = [];
+        var get = [];
+        btn.addEventListener("click", () => {
+            var m = mnth.value.toUpperCase()
+            var it = itm.value.toUpperCase()
+            var loc1 = name + "/" + m
+            firebase.database().ref(loc1).once("value", function(snap){
+                snap.forEach(function(snapChild){
+                    item = snapChild.key
+                    amt = snapChild.val()["Amount"]
+                    items.push(item)
+                    amounts.push(amt)
+                });
+            var ln = items.length
+            for(var i = 0; i < ln; i++){
+                if(it == items[i]){
+                    flag = 1
+                    break
+                }  
+            }
+            if(flag == 1){
+                var amt = amounts[i]
+                var namt = amt + " + " + amnt.value
+                var ref = name + "/" + m + "/" + it
+                firebase.database().ref(ref).set({
+                    Amount: namt
+                });
+            }
+            else{
+                var ref = name + "/" + m + "/" + it
+                firebase.database().ref(ref).set({
+                    Amount: amnt.value
+                });
+            }
+            alert("Done")
+            location.reload()
+            });
+        });
+        
+    </script>
+</body>
+</html>

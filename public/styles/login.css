@@ -1,0 +1,65 @@
+body{
+    background-color: black;
+}
+#main{
+    margin-top: 3%;
+    background-color: white;
+    width: 330px;
+    height: 250px;
+    border-radius: 9px;
+}
+h1{
+    color: white;
+    text-decoration: underline dashed;
+}
+#unm, #passd{
+    width: 210px;
+    height: 25px;
+    font-size: 20px;
+    /* font-weight: bolder; */
+    border: none;
+    border: 1px black solid;
+    border-radius: 2px;
+}
+#unm{
+    margin-top: 1%;
+}
+#unm:focus, #passd:focus{
+    outline: none;
+    background-color: rgba(128, 128, 128, 0.287);
+    transition: 950ms;
+}
+#unm:hover, #passd:hover{
+    background-color: rgba(128, 128, 128, 0.201);
+    transition: 400ms;
+}
+#links{
+    /* position: relative; */
+    font-size: 20px;
+    margin-top: 5%;
+}
+a{
+    text-decoration: underline tomato;
+    color: tomato;
+}
+a:focus{
+    color: white;
+    text-decoration: underline white;
+    outline: none;
+}
+#login{
+    border: none;
+    background-color: springgreen;
+    color: black;
+    width: 150px;
+    height: 50px;
+    font-size: 23px;
+    cursor: pointer;
+}
+#login:focus{
+    outline: none;
+    background-color: rgba(7, 209, 84, 0.671);
+}
+#login:hover{
+    background-color: rgba(7, 209, 84, 0.671);
+}

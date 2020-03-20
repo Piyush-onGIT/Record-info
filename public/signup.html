@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expenditure</title>
+    <link rel="stylesheet" href="styles/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="scripts/signup.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+</head>
+<body>
+    <h1>
+        <center>
+            Record-info
+        </center>
+    </h1>
+    <center>
+        <div id="links">
+            <a href="signup.html">
+                Register
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="login.html">
+                Login
+            </a>
+        </div>
+    <form id="main">
+        <input type="radio" value="Parents" id="boxp" name="category">Parents
+        <input type="radio" value="Child" id="boxc" name="category">Child
+        <input type="text" placeholder="Username" id="usnm"><p></p>
+        <input type="password" placeholder="Password" id="passd"><p></p>
+        <!-- <input type="button" id="show" value="Show"> -->
+        <input type="password" placeholder="Re-type Password" id="rpassd">
+        <i class="fa fa-eye" id="show" aria-hidden="true"></i>
+        <p></p>
+        <input type="button" id="btn" value="Sign Up">
+    </form>
+    </center>
+    <script>
+        var firebaseConfig = {
+        apiKey: "AIzaSyC7NhuaHSfDzJ7D-1OdQfI88pMbKllPPig",
+        authDomain: "record-info.firebaseapp.com",
+        databaseURL: "https://record-info.firebaseio.com",
+        projectId: "record-info",
+        storageBucket: "record-info.appspot.com"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var usnm = document.getElementById("usnm")
+        var passd = document.getElementById("passd")
+        var rpassd = document.getElementById("rpassd")
+        var btn = document.getElementById("btn")
+        var show = document.getElementById("show")
+        var par = document.getElementById("boxp")
+        var chil = document.getElementById("boxc")
+        var users = [];
+        var catg;
+        show.addEventListener("click", () => {
+            if(rpassd.type == "password"){
+                show.style.color = "green"
+                rpassd.type = "text"
+            }
+            else{
+                show.style.color = "red";
+                rpassd.type = "password"
+            }
+        });
+        btn.addEventListener("click", () => {
+            // console.log(par.checked, chil.checked)
+            if (rpassd.value && passd.value && usnm.value && (par.checked || chil.checked)){
+                if(par.checked){
+                        catg = par.value
+                    }
+                    else if(chil.checked){
+                        catg = chil.value
+                    }
+                var usr = catg + "/" +  usnm.value
+                var flag = 0;
+                firebase.database().ref(catg).once("value", function(snap){
+                    snap.forEach(function(childSnap){
+                    var childKey = childSnap.key;
+                    // var childData = childSnap.val();
+                    // console.log(childKey, childData["Password"]);
+                    if(usnm.value == childKey){
+                        flag = 1
+                    }
+                    });
+                    if(flag == 1){
+                        alert("Username already exists")
+                    }
+                    else{
+                        if (rpassd.value == passd.value){
+                            firebase.database().ref(usr).set({
+                                Password: passd.value
+                            });
+                            alert("Account created successfully.")
+                            location.reload()
+                            if(catg == "Child"){
+                                var page = catg + ".html?name=" + usnm.value
+                            }
+                            else{
+                                var page = catg + ".html?name=" + usnm.value
+                            }
+                            window.location.href = page
+                        }
+                        else{
+                            alert("Password doesn't match.")
+                        }
+                    }
+                });
+            }
+            else{
+                alert("Please make sure that all fields are filled.")
+            }
+        });
+    </script>
+</body>
+</html>

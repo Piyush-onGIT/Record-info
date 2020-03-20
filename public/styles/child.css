@@ -1,0 +1,41 @@
+body{
+    background-color: black;
+}
+h1{
+    color: white;
+}
+#main{
+    margin-top: 6%;
+    background-image: linear-gradient(red, 30%, blue);
+    width: 310px;
+    height: 290px;
+}
+#mnth, #item, #amt{
+    font-size: 16px;
+    border: none;
+    border: 2px black solid;
+    border-radius: 3px;
+    height: 30px;
+}
+#mnth{
+    margin-top: 5%;
+}
+#add{
+    background-color: springgreen;
+    border: none;
+    margin-top: 4%;
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+}
+input:focus{
+    outline: none;
+}
+#add:focus{
+    outline: none;
+    background-color: rgba(7, 209, 84);
+}
+#add:hover{
+    background-color: rgba(7, 209, 84);
+}

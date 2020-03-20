@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expenditure</title>
+    <link rel="stylesheet" href="styles/parents.css">
+    <script src="scripts/parents.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+</head>
+<body>
+    <center>
+        <table id="table">
+            <tr id="row1">
+            </tr>
+        </table>
+    </center>
+    <script>
+        var url = document.location.href
+        var name = "";
+        var month = "";
+        var ln = url.length
+        var ind;
+        for(var i = 0; i < ln; i++){
+            if(url[i] == "="){
+                break
+            }
+        }
+        ind = i + 1
+        for(ind; ind < ln && url[ind] != ":"; ind++){
+            name += url[ind]
+        }
+        var ind1 = ind + 1
+        for(ind1; ind1 < ln; ind1++){
+            month += url[ind1]
+        }
+
+        var firebaseConfig = {
+        apiKey: "AIzaSyC7NhuaHSfDzJ7D-1OdQfI88pMbKllPPig",
+        authDomain: "record-info.firebaseapp.com",
+        databaseURL: "https://record-info.firebaseio.com",
+        projectId: "record-info",
+        storageBucket: "record-info.appspot.com"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var users = [];
+        var months = [];
+        var flag = 1;
+        var flag2 = 1;
+        firebase.database().ref("/").once("value", function(snap){
+            // console.log(name, month)
+                snap.forEach(function(snapChild){
+                    users.push(snapChild.key)
+                });
+            // console.log(users)
+                var ln = users.length
+                for(var i = 0; i < ln; i++){
+                    if(name == users[i]){
+                        flag = 0
+                        break
+                    }
+                }
+                if(flag == 0){ // if user exists
+                    firebase.database().ref(name).once("value", function(snap1){
+                        snap1.forEach(function(snapChild1){
+                            var mt = snapChild1.key
+                            months.push(mt)
+                        });
+                        console.log(months)
+                        var ln1 = months.length
+                        for(var j = 0; j < ln1; j++){
+                            if(month.toUpperCase() == months[j]){
+                                flag2 = 0
+                                break
+                            }
+                        }
+                        if(flag2 == 0){ // if month exists
+                            var r1 = document.getElementById("row1")
+                            var d1 = document.createElement("td")
+                            var h1 = document.createTextNode("Item")
+                            d1.appendChild(h1)
+                            r1.appendChild(d1)
+                            var d2 = document.createElement("td")
+                            var h2 = document.createTextNode("Amount")
+                            d2.appendChild(h2)
+                            r1.appendChild(d2)
+                            var ref = name + "/" + month.toUpperCase()
+                            firebase.database().ref(ref).once("value", function(snap2){
+                                snap2.forEach(function(snapChild2){
+                                    var itm = snapChild2.key
+                                    var amt = snapChild2.val()["Amount"]
+                                    // document.write(itm, amt)
+                                    var tbl = document.getElementById("table")
+                                    var tr = document.createElement("tr")
+                                    var td1 = document.createElement("td")
+                                    var td2 = document.createElement("td")
+
+                                    var item = document.createTextNode(itm)
+                                    td1.appendChild(item)
+                                    tr.appendChild(td1)
+                                    var amount = document.createTextNode(amt)
+                                    td2.appendChild(amount)
+                                    tr.appendChild(td2)
+                                    tbl.appendChild(tr)
+                                });
+                            });
+                        }
+                        else{
+                            alert("No records for " + month.toUpperCase())
+                            // location.reload()
+                        }
+                    });
+                }
+                else{
+                    alert("Maybe your child has not registered yet")
+                    // location.reload()
+                }
+            });
+    </script>
+</body>
+</html>

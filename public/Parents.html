@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expenditure</title>
+    <link rel="stylesheet" href="styles/parents.css">
+    <script src="scripts/parents.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+</head>
+<body>
+    <script>
+        var url = document.location.href
+        var name = "";
+        var ln = url.length
+        var ind;
+        for(var i = 0; i < ln; i++){
+            if(url[i] == "="){
+                break
+            }
+        }
+        ind = i + 1
+        for(ind; ind < ln; ind++){
+            name += url[ind]
+        }
+        window.onload = function(){
+            var txt = document.getElementById("name")
+            txt.innerHTML = name
+        }
+    </script>
+    <div id="top">
+        <center>
+            <h1>
+                <span id="txt">Hello, <span id="name"></span></span>
+            </h1>
+        </center>
+    </div>
+    Hello
+    <div id="info">
+        <h2>
+        You have to enter your child username to see his/her records.
+        </h2>
+    </div>
+    <input type="text" placeholder="Username of child" id="usnm">&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" placeholder="YYYY-Month" id="mnth"><p></p>
+    <input type="button" id="get" value="Get">
+    <script>
+        var firebaseConfig = {
+        apiKey: "AIzaSyC7NhuaHSfDzJ7D-1OdQfI88pMbKllPPig",
+        authDomain: "record-info.firebaseapp.com",
+        databaseURL: "https://record-info.firebaseio.com",
+        projectId: "record-info",
+        storageBucket: "record-info.appspot.com"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var nm = document.getElementById("usnm")
+        var month = document.getElementById("mnth")
+        var btn = document.getElementById("get")
+        var users = [];
+        var months = [];
+        var flag = 1;
+        var flag2 = 1;
+        btn.addEventListener("click", () => {
+            window.location.href = "records.html?name=" + nm.value + ":" + month.value
+        });
+    </script>
+</body>
+</html>

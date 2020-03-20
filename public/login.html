@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expenditure</title>
+    <link rel="stylesheet" href="styles/login.css">
+    <script src="scripts/login.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+</head>
+<body>
+    <h1>
+        <center>
+            Record-info
+        </center>
+    </h1>
+    <center>
+        <div id="links">
+            <a href="signup.html">
+                Register
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="login.html">
+                Login
+            </a>
+        </div>
+        <form id="main">
+            <input type="radio" value="Parents" name="category" id="par">Parents
+            <input type="radio" value="Child" name="category" id="child">Child<p></p>
+            <input type="text" placeholder="Username" id="unm"><p></p>
+            <input type="password" placeholder="Password" id="passd"><p></p>
+            <input type="button" value="Log In" id="login">
+        </form>
+    </center>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyC7NhuaHSfDzJ7D-1OdQfI88pMbKllPPig",
+            authDomain: "record-info.firebaseapp.com",
+            databaseURL: "https://record-info.firebaseio.com",
+            projectId: "record-info",
+            storageBucket: "record-info.appspot.com"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var usnm = document.getElementById("unm")
+        var passd = document.getElementById("passd")
+        var btn = document.getElementById("login")
+        var par = document.getElementById("par")
+        var chil = document.getElementById("child")
+        var log = 1;
+        var catg;
+        btn.addEventListener("click", () => {
+            if(usnm.value && passd.value && (par.checked || chil.checked)){
+                if(par.checked){
+                    catg = par.value
+                }
+                else if(chil.checked){
+                    catg = chil.value
+                }
+                // console.log(catg)
+                firebase.database().ref(catg).once("value", function(snap){
+                    snap.forEach(function(snapChild){
+                        var username = snapChild.key
+                        var data = snapChild.val()
+                        if(usnm.value == username){
+                            log = 0
+                            if(passd.value == data["Password"]){
+                                alert("Logged in successfully")
+                                location.reload()
+                                if(catg == "Child"){
+                                    var page = catg + ".html?name=" + usnm.value
+                                }
+                                else{
+                                    var page = catg + ".html?name=" + usnm.value
+                                }
+                                window.location.href = page
+                            }
+                            else{
+                                alert("Incorrect password")
+                            }
+                        }
+                    });
+                    if(log == 1){
+                        alert("Account doesn't exist")
+                    }
+                });
+            }
+            else{
+                alert("Please make sure that all fields are filled.")
+            }
+        });
+    </script>
+</body>
+</html>
